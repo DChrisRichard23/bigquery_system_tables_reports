@@ -117,4 +117,58 @@ view: job_execution_query {
     type: count
     drill_fields: []
   }
+
+  measure: projects {
+    type: count_distinct
+    sql: ${TABLE}.project_id ;;
+  }
+
+  measure: users {
+    type: count_distinct
+    sql: ${TABLE}.user_email ;;
+  }
+
+  measure: jobs {
+    type: count_distinct
+    sql: ${TABLE}.job_id ;;
+  }
+
+  measure: query_jobs {
+    type: count_distinct
+    sql: CASE WHEN ${TABLE}.job_type = 'QUERY' THEN ${TABLE}.job_id END ;;
+  }
+
+  measure: extract_jobs {
+    type: count_distinct
+    sql: CASE WHEN ${TABLE}.job_type = 'EXTRACT' THEN ${TABLE}.job_id END ;;
+  }
+
+  measure: copy_jobs {
+    type: count_distinct
+    sql: CASE WHEN ${TABLE}.job_type = 'COPY' THEN ${TABLE}.job_id END ;;
+  }
+
+  measure: load_jobs {
+    type: count_distinct
+    sql: CASE WHEN ${TABLE}.job_type = 'LOAD' THEN ${TABLE}.job_id END ;;
+  }
+
+  measure: avg_slots_consumed {
+    type: average
+    sql: ${avg_slots} ;;
+    value_format: "#,###.00"
+  }
+
+  measure: total_terabytes_processed {
+    type: sum
+    sql: total_bytes_processed / 1099511627776 ;;
+    value_format: "#,###.00"
+  }
+
+  measure: avg_job_duration {
+    type: average
+    sql: job_duration_seconds ;;
+    value_format: "#,###.00"
+  }
+
 }
