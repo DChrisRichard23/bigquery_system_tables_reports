@@ -7,6 +7,12 @@ view: job_execution_query {
     sql: ${TABLE}.avg_slots ;;
   }
 
+  dimension: total_slot_ms {
+    type: number
+    sql: ${TABLE}.total_slot_ms ;;
+  }
+
+
   dimension: avg_slots_tier {
     type: tier
     tiers: [0,0.001,0.003,0.01,0.03,0.1,0.3,1,3,10,30,100,300,1000,3000,10000,30000]
@@ -35,6 +41,11 @@ view: job_execution_query {
       time
     ]
     sql: ${TABLE}.creation_time ;;
+  }
+
+  dimension: creation_hour {
+    type: number
+    sql: ${TABLE}.creation_hour ;;
   }
 
   dimension_group: end {
@@ -93,6 +104,16 @@ view: job_execution_query {
   dimension: job_id {
     type: string
     sql: ${TABLE}.job_id ;;
+  }
+
+  dimension: statement_type {
+    type: string
+    sql: ${TABLE}.statement_type ;;
+  }
+
+  dimension: query {
+    type: string
+    sql: ${TABLE}.query ;;
   }
 
   dimension: job_type {
