@@ -7,6 +7,12 @@ view: job_execution_query {
     sql: ${TABLE}.avg_slots ;;
   }
 
+  dimension: avg_slots_tier {
+    type: tier
+    tiers: [0,0.001,0.003,0.01,0.03,0.1,0.3,1,3,10,30,100,300,1000,3000,10000,30000]
+    sql: ${job_duration_seconds} ;;
+  }
+
   dimension_group: creation {
     type: time
     timeframes: [
@@ -78,6 +84,12 @@ view: job_execution_query {
     sql: ${TABLE}.job_duration_seconds ;;
   }
 
+  dimension: job_duration_tier {
+    type: tier
+    tiers: [0,1,2,3,5,10,30,60,300,10000,30000]
+    sql: ${job_duration_seconds} ;;
+  }
+
   dimension: job_id {
     type: string
     sql: ${TABLE}.job_id ;;
@@ -106,6 +118,12 @@ view: job_execution_query {
   dimension: total_bytes_processed {
     type: number
     sql: ${TABLE}.total_bytes_processed ;;
+  }
+
+  dimension: total_bytes_tier {
+    type: tier
+    tiers: [0,10,30,100,300,1000,3000,10000,30000,100000,300000,1000000,3000000,10000000,30000000,100000000,300000000,1000000000,3000000000,10000000000,30000000000,100000000000]
+    sql: ${total_bytes_processed} ;;
   }
 
   dimension: user_email {
@@ -169,6 +187,12 @@ view: job_execution_query {
     type: average
     sql: job_duration_seconds ;;
     value_format: "#,###.00"
+  }
+
+  measure: total_job_duration {
+    type: sum
+    sql: ${job_duration_seconds} ;;
+    value_format: "#,###"
   }
 
 }

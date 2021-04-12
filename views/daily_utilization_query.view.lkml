@@ -2,9 +2,16 @@ view: daily_utilization_query {
   sql_table_name: `information_schema_tables.daily_utilization_query`
     ;;
 
-  dimension: average_daily_slot_usage {
+  dimension: total_slots_sec_in {
     type: number
-    sql: ${TABLE}.average_daily_slot_usage ;;
+    hidden: yes
+    sql: ${TABLE}.total_slots_sec ;;
+  }
+
+  measure: total_slots_sec {
+    type: sum
+    sql: ${total_slots_sec_in} ;;
+    value_format: "#,###.00"
   }
 
   dimension: job_type {
@@ -41,8 +48,14 @@ view: daily_utilization_query {
     sql: ${TABLE}.user_email ;;
   }
 
-  measure: count {
+  measure: jobs {
     type: count
     drill_fields: []
+  }
+
+  measure: users {
+    type: count_distinct
+    sql: ${user_email} ;;
+
   }
 }
