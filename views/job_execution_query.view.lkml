@@ -12,6 +12,24 @@ view: job_execution_query {
     sql: ${TABLE}.total_slot_ms ;;
   }
 
+  dimension: total_slot_sec {
+    type: number
+    sql: ${TABLE}.total_slot_ms / 1000 ;;
+    hidden: yes
+  }
+
+  dimension: total_slot_sec_tier {
+    type: tier
+    tiers: [0,0.01,0.03,0.1,0.3,1,3,10,30,100,300,1000,3000,10000,30000]
+    sql: ${total_slot_sec} ;;
+  }
+
+  measure: total_slots_seconds {
+    type: sum
+    sql: ${total_slot_ms} / 1000 ;;
+    value_format: "#,###.00"
+  }
+
 
   dimension: avg_slots_tier {
     type: tier
@@ -34,6 +52,11 @@ view: job_execution_query {
     sql: ${TABLE}.creation_date ;;
   }
 
+  measure: days_with_job {
+    type: count_distinct
+    sql: ${creation_date} ;;
+  }
+
   dimension_group: creation_time {
     type: time
     timeframes: [
@@ -41,6 +64,18 @@ view: job_execution_query {
       time
     ]
     sql: ${TABLE}.creation_time ;;
+  }
+
+  measure: min_creation_time {
+    type: date
+    sql: MIN(${creation_date}) ;;
+    convert_tz: no
+  }
+
+  measure: max_creation_time {
+    type: date
+    sql: MAX(${creation_date}) ;;
+    convert_tz: no
   }
 
   dimension: creation_hour {
@@ -150,6 +185,7 @@ view: job_execution_query {
   dimension: user_email {
     type: string
     sql: ${TABLE}.user_email ;;
+    html: <a href="/dashboards-next/110?User%20Email={{ value }}">{{ value }}</a> ;;
   }
 
   measure: count {
@@ -204,6 +240,12 @@ view: job_execution_query {
     value_format: "#,###.00"
   }
 
+  measure: total_gigabytes_processed {
+    type: sum
+    sql: total_bytes_processed / 134217728 ;;
+    value_format: "#,###.00"
+  }
+
   measure: avg_job_duration {
     type: average
     sql: job_duration_seconds ;;
@@ -213,6 +255,28 @@ view: job_execution_query {
   measure: total_job_duration {
     type: sum
     sql: ${job_duration_seconds} ;;
+    value_format: "#,###"
+  }
+
+  dimension: table_id {
+    type: string
+    sql: ${TABLE}.table_id ;;
+  }
+
+  dimension: dataset_id {
+    type: string
+    sql: ${TABLE}.dataset_id ;;
+  }
+
+  measure: datasets {
+    type: count_distinct
+    sql: ${dataset_id} ;;
+    value_format: "#,###"
+  }
+
+  measure: tables {
+    type: count_distinct
+    sql: ${dataset_id}||${table_id} ;;
     value_format: "#,###"
   }
 
