@@ -252,10 +252,16 @@ view: job_execution_query {
     value_format: "#,###.00"
   }
 
-  measure: total_job_duration {
+  measure: total_job_duration_seconds {
     type: sum
     sql: ${job_duration_seconds} ;;
     value_format: "#,###"
+  }
+
+  measure: total_job_duration_hours {
+    type: sum
+    sql: ${job_duration_seconds} / 3600 ;;
+    value_format: "#,###.00"
   }
 
   dimension: table_id {
@@ -278,6 +284,30 @@ view: job_execution_query {
     type: count_distinct
     sql: ${dataset_id}||${table_id} ;;
     value_format: "#,###"
+  }
+
+  dimension: cost_usd {
+    type: number
+    sql: ${TABLE}.cost_usd ;;
+    value_format: "0.000000"
+  }
+
+  measure: total_cost {
+    type: sum
+    sql: ${cost_usd} ;;
+    value_format: "$#,###.00"
+  }
+
+  measure: cost_per_job {
+    type: number
+    sql: ${total_cost} / ${jobs} ;;
+    value_format: "0.000000"
+  }
+
+  measure: cost_per_gigabyte {
+    type: number
+    sql: ${total_cost} / ${total_gigabytes_processed} ;;
+    value_format: "0.000000"
   }
 
 }
