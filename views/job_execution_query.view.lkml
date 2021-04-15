@@ -18,6 +18,13 @@ view: job_execution_query {
     hidden: yes
   }
 
+  dimension: back_button {
+    type: string
+    sql: ${TABLE}.back_button ;;
+    html:  <a href="/dashboards-next/108">{{ value }}</a> ;;
+  }
+
+
   dimension: total_slot_sec_tier {
     type: tier
     tiers: [0,0.01,0.03,0.1,0.3,1,3,10,30,100,300,1000,3000,10000,30000]
@@ -289,7 +296,7 @@ view: job_execution_query {
   dimension: cost_usd {
     type: number
     sql: ${TABLE}.cost_usd ;;
-    value_format: "0.000000"
+    value_format: "0.0000"
   }
 
   measure: total_cost {
@@ -301,13 +308,13 @@ view: job_execution_query {
   measure: cost_per_job {
     type: number
     sql: ${total_cost} / ${jobs} ;;
-    value_format: "0.000000"
+    value_format: "0.0000"
   }
 
   measure: cost_per_gigabyte {
     type: number
     sql: ${total_cost} / ${total_gigabytes_processed} ;;
-    value_format: "0.000000"
+    value_format: "0.0000"
   }
 
 }
