@@ -18,7 +18,14 @@ persist_with: bigquery_system_tables_reports_default_datagroup
 
 # explore: job_error_query {}
 
-explore: job_execution_query {}
+explore: job_execution_query {
+  join: table_most_recent_owner {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${job_execution_query.dataset_table} = ${table_most_recent_owner.dataset_table} ;;
+  }
+
+}
 
 # explore: jobs_by_project {
 #   join: jobs_by_project__labels {

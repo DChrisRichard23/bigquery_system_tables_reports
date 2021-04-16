@@ -276,6 +276,11 @@ view: job_execution_query {
     sql: ${TABLE}.table_id ;;
   }
 
+  dimension: dataset_table {
+    type: string
+    sql: ${dataset_id} || '.' || ${table_id} ;;
+  }
+
   dimension: dataset_id {
     type: string
     sql: ${TABLE}.dataset_id ;;
