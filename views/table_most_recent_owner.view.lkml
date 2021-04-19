@@ -27,6 +27,7 @@ view: table_most_recent_owner {
   dimension: most_recent_owner {
     type: string
     sql: ${TABLE}.most_recent_owner ;;
+    html: <a href="/dashboards-next/110?User%20Email={{ value }}">{{ value }}</a> ;;
   }
 
   set: detail {

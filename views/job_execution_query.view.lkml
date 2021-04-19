@@ -16,6 +16,7 @@ view: job_execution_query {
     type: number
     sql: ${TABLE}.total_slot_ms / 1000 ;;
     hidden: yes
+    value_format: "#,###"
   }
 
   dimension: back_button {
@@ -34,7 +35,7 @@ view: job_execution_query {
   measure: total_slots_seconds {
     type: sum
     sql: ${total_slot_ms} / 1000 ;;
-    value_format: "#,###.00"
+    value_format: "#,###"
   }
 
 
@@ -57,6 +58,17 @@ view: job_execution_query {
     convert_tz: no
     datatype: date
     sql: ${TABLE}.creation_date ;;
+  }
+
+  dimension: creation_date_c {
+    type: string
+    sql: ${TABLE}.creation_date_c ;;
+    html: <a href="/dashboards-next/115?Creation+Date+C={{ value }}">{{ value }}</a> ;;
+  }
+
+  dimension: creation_time_clock {
+    type: string
+    sql: ${TABLE}.creation_time_clock ;;
   }
 
   measure: days_with_job {
@@ -146,6 +158,7 @@ view: job_execution_query {
   dimension: job_id {
     type: string
     sql: ${TABLE}.job_id ;;
+    html: <a href="/dashboards-next/112?Job%20ID={{ value }}">{{ value }}</a> ;;
   }
 
   dimension: statement_type {
@@ -259,6 +272,18 @@ view: job_execution_query {
     value_format: "#,###.00"
   }
 
+  measure: bytes_per_job {
+    type: number
+    sql: SUM(${total_bytes_processed}) / ${jobs} ;;
+    value_format: "#,###"
+  }
+
+  measure: gigabytes_per_job {
+    type: number
+    sql: ${total_gigabytes_processed} / ${jobs} ;;
+    value_format: "#,###.00"
+  }
+
   measure: total_job_duration_seconds {
     type: sum
     sql: ${job_duration_seconds} ;;
@@ -279,11 +304,13 @@ view: job_execution_query {
   dimension: dataset_table {
     type: string
     sql: ${dataset_id} || '.' || ${table_id} ;;
+    html: <a href="/dashboards-next/114?Dataset%20Table={{ value }}">{{ value }}</a> ;;
   }
 
   dimension: dataset_id {
     type: string
     sql: ${TABLE}.dataset_id ;;
+    html: <a href="/dashboards-next/113?Dataset+ID={{ value }}">{{ value }}</a> ;;
   }
 
   measure: datasets {
@@ -320,6 +347,18 @@ view: job_execution_query {
     type: number
     sql: ${total_cost} / ${total_gigabytes_processed} ;;
     value_format: "0.0000"
+  }
+
+  dimension: cost_tier {
+    type: tier
+    tiers: [0,0.001,0.003,0.01,0.03,0.1,0.3,1,3,10,30,100,300,1000,3000]
+    sql: ${cost_usd} ;;
+  }
+
+  measure: slots_per_job {
+    type: number
+    sql: ${total_slots_seconds} / ${jobs} ;;
+    value_format: "#,###.00"
   }
 
 }
