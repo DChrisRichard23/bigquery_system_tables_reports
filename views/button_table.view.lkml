@@ -20,6 +20,7 @@ view: button_table {
   dimension: most_recent_day_button {
     type: string
     sql: ${TABLE}.most_recent_day_button ;;
+    html:  <a href="/dashboards-next/126?Hours%20Ago=%5B0,24%5D">{{ value }}</a> ;;
   }
 
   set: detail {

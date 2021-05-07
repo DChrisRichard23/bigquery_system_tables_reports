@@ -96,12 +96,23 @@ view: job_execution_query {
   }
 
   measure: min_creation_time {
+    type: time
+    sql: MIN(${TABLE}.creation_time) ;;
+  }
+
+  measure: max_creation_time {
+    type: time
+    sql: MAX(${TABLE}.creation_time) ;;
+  }
+
+
+  measure: min_creation_date {
     type: date
     sql: MIN(${creation_date}) ;;
     convert_tz: no
   }
 
-  measure: max_creation_time {
+  measure: max_creation_date {
     type: date
     sql: MAX(${creation_date}) ;;
     convert_tz: no
