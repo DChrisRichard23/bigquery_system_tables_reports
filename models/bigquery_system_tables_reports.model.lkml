@@ -24,6 +24,11 @@ explore: job_execution_query {
     relationship: many_to_one
     sql_on: ${job_execution_query.dataset_table} = ${table_most_recent_owner.dataset_table} ;;
   }
+  join: button_table {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: 1=1 ;;
+  }
 
 }
 
