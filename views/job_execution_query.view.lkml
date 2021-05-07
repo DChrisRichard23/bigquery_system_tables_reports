@@ -19,6 +19,16 @@ view: job_execution_query {
     value_format: "#,###"
   }
 
+  dimension: hours_ago {
+    type: number
+    sql: ${TABLE}.hours_ago ;;
+  }
+
+  dimension: days_ago {
+    type: number
+    sql: ${TABLE}.days_ago ;;
+  }
+
   dimension: back_button {
     type: string
     sql: ${TABLE}.back_button ;;
