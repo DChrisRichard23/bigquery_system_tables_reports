@@ -5,7 +5,7 @@ include: "/views/**/*.view"
 
 datagroup: bigquery_system_tables_reports_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
-  max_cache_age: "0 hour"
+  max_cache_age: "5 minute"
 }
 
 persist_with: bigquery_system_tables_reports_default_datagroup
